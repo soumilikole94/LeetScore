@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LeetScore</title>
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            color: #111;
+            /* Dark grey */
+        }
+
+        .user-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .user-column {
+            flex: 1;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .user-column h2 {
+            color: teal;
+            /* User name color */
+        }
+
+        .user-column button {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .score-button {
+            border: none;
+        }
+
+        .score-button.red {
+            background-color: #ff6961;
+        }
+
+        .score-button.green {
+            background-color: #77dd77;
+        }
+
+        .delete-button {
+            background-color: transparent;
+            color: red;
+            border: none;
+            /* Remove border */
+            padding: 5px;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.8em;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .weight-loss-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .weight-loss-form input[type="submit"] {
+            margin-left: 10px;
+        }
+
+        .add-user-form {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .add-user-form input[type="submit"] {
+            margin-left: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: indigo;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>LeetScore</h1>
+    <div class="user-container">
+        {% for user in users %}
+        <div class="user-column">
+            <h2>{{ user.name }}</h2>
+            <form class="weight-loss-form" action="{{ url_for('update_weight', user_id=user.id) }}" method="POST">
+                {{ form.hidden_tag() }}
+                <p>Weight Lost in lbs since June 15th: <input type="text" name="weight_loss"
+                        value="{{ user.weight_loss }}" size="5">
+                    <input type="submit" value="Update">
+                </p>
+            </form>
+            <p>Score: {{ user.score }}</p>
+            {% for i in range(75) %}
+            {% if user.button_states[i] == '0' %}
+            <a href="{{ url_for('update_score', user_id=user.id, button_id=i+1) }}"><button
+                    class="score-button red">{{i+1}}</button></a>
+            {% else %}
+            <a href="{{ url_for('update_score', user_id=user.id, button_id=i+1) }}"><button
+                    class="score-button green">{{ i+1 }}</button></a>
+            {% endif %}
+            {% endfor %}
+            <a href="#"
+                onclick="if(confirm('Are you sure you want to delete user? All data for this user will be lost.')){ window.location.href = '{{ url_for('delete_user', user_id=user.id) }}'; }"><button
+                    class="delete-button">Delete User</button></a>
+        </div>
+        {% endfor %}
+    </div>
+    <form class="add-user-form" method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.name.label }} {{ form.name() }} {{ form.submit() }}</p>
+    </form>
+</body>
+
+</html>
