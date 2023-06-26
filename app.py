@@ -16,7 +16,7 @@ class User(db.Model):
     button_states = db.Column(db.String(75), default='0'*75, nullable=False)
 
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def index():
     form = ScoreForm()
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.name.data).first()
@@ -24,10 +24,10 @@ def home():
             user = User(name=form.name.data)
             db.session.add(user)
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('index'))
     users = User.query.all()
     weight_forms = {user.id: WeightLossForm() for user in users}
-    return render_template('home.html', form=form, users=users, weight_forms=weight_forms)
+    return render_template('index.html', form=form, users=users, weight_forms=weight_forms)
 
 @app.route('/update_score/<int:user_id>/<int:button_id>')
 def update_score(user_id, button_id):
@@ -37,7 +37,7 @@ def update_score(user_id, button_id):
     user.button_states = ''.join(button_states)
     user.score = user.button_states.count('1')
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('index'))
 
 @app.route('/delete/<int:user_id>')
 def delete_user(user_id):
@@ -45,7 +45,7 @@ def delete_user(user_id):
     if user:
         db.session.delete(user)
         db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('index'))
 
 @app.route('/update_weight/<int:user_id>', methods=['GET', 'POST'])
 def update_weight(user_id):
@@ -55,8 +55,8 @@ def update_weight(user_id):
         if user:
             user.weight_loss = form.weight_loss.data
             db.session.commit()
-        return redirect(url_for('home'))
-    return render_template('home.html', form=form, users=User.query.all())
+        return redirect(url_for('index'))
+    return render_template('index.html', form=form, users=User.query.all())
 
 if __name__ == '__main__':
     app.run(debug=True)
