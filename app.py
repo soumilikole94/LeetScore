@@ -39,7 +39,7 @@ def update_score(user_id, button_id):
     db.session.commit()
     return redirect(url_for('home'))
 
-@app.route('/delete_user/<int:user_id>')
+@app.route('/delete/<int:user_id>')
 def delete_user(user_id):
     user = User.query.get(user_id)
     if user:
@@ -57,8 +57,6 @@ def update_weight(user_id):
             db.session.commit()
         return redirect(url_for('home'))
     return render_template('home.html', form=form, users=User.query.all())
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
