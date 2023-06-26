@@ -1,0 +1,442 @@
+<html>
+
+<head>
+    <title>LeetScore</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Helvetica, sans-serif;
+            color: #111;
+        }
+
+        /* Styles for the header */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: indigo;
+        }
+
+        /* Styles for the link to Neetcode */
+        .neetcode-link {
+            display: block;
+            text-align: center;
+            text-decoration: underline;
+            color: blue;
+        }
+
+        /* Styles for the user columns */
+        .user-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .user-column {
+            flex: 1 1 auto;
+            margin: 0 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 50%;
+            /* Set a maximum width for each column */
+        }
+
+
+        @media (min-width: 768px) {
+
+            /* For screens with a minimum width of 768px (e.g., tablets and desktops) */
+            .user-column {
+                width: calc(100% / 3);
+            }
+        }
+
+        @media (min-width: 1024px) {
+
+            /* For screens with a minimum width of 1024px (e.g., large desktops) */
+            .user-column {
+                width: calc(100% / 4);
+            }
+        }
+
+
+        .user-column h2 {
+            color: teal;
+        }
+
+        .user-column p {
+            color: #B22222;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .delete-button {
+            background-color: transparent;
+            color: red;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        /* Styles for the buttons */
+        .score-button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 10px;
+            text-align: justify;
+        }
+
+
+        .score-button {
+            display: inline-block;
+            padding: 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            color: white;
+            background-color: #dc3545;
+            cursor: pointer;
+            text-decoration: none;
+            width: auto;
+            text-align: center;
+            /* Center the text within the button */
+            flex-grow: 1;
+            /* Allow the buttons to grow and fill the available space */
+        }
+
+        .score-button-container::after {
+            content: "";
+            flex-grow: 9999;
+            /* Create a flexible empty item to justify the content */
+        }
+
+        @media (max-width: 600px) {
+            .score-button {
+                max-width: 100%;
+                /* Set the maximum width to 100% for smaller screens */
+            }
+        }
+
+        .score-button.green {
+            background-color: #28a745;
+            /* Green color */
+        }
+
+        /* Styles for the add user form */
+        .add-user-form {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .add-user-form input[type="text"] {
+            margin-right: 10px;
+        }
+
+        .add-user-form input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>LeetScore</h1>
+        <a href="https://neetcode.io/practice" class="neetcode-link" target="_blank">Link to Neetcode's Blind 75</a>
+
+    </header>
+
+    <div class="user-container">
+        {% for user in users %}
+        <div class="user-column">
+            <h2>{{ user['name'] }}</h2>
+            <form class="weight-loss-form" action="{{ url_for('update_weight', user_id=user.id) }}" method="POST">
+                {{ form.hidden_tag() }}
+                <p>Weight Lost in lbs since June 15th: <input type="text" name="weight_loss"
+                        value="{{ user.weight_loss }}" size="5">
+                    <input type="submit" value="Update">
+                </p>
+            </form>
+            <p>Score: <span style="color: #B22222; font-size: 16px;" id="score_{{ user.id }}">{{ user.score }}</span>
+            </p>
+            <div class="score-button-container">
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="1">
+                    Contains Duplicate
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="2">
+                    Valid Anagram
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="3">
+                    Two Sum
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="4">
+                    Group Anagrams
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="5">
+                    Top K Frequent Elements
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="6">
+                    Product of Array Except Self
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="7">
+                    Encode and Decode Strings
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="8">
+                    Longest Consecutive Sequence
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="9">
+                    Valid Palindrome
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="10">
+                    3Sum
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="11">
+                    Container With Most Water
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="12">
+                    Buy & Sell Stock
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="13">
+                    Longest Substring w/o Repeating Chars
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="14">
+                    Longest Repeating Char Replacement
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="15">
+                    Minimum Window Substring
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="16">
+                    Valid Parentheses
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="17">
+                    Find Min In Rotated Sorted Array
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="18">
+                    Search In Rotated Sorted Array
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="19">
+                    Reverse Linked List
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="20">
+                    Merge Two Sorted Lists
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="21">
+                    Reorder List
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="22">
+                    Remove Nth Node From End of List
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="23">
+                    Linked List Cycle
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="24">
+                    Merge K Sorted Lists
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="25">
+                    Invert Binary Tree
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="26">
+                    Maximum Depth of Binary Tree
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="27">
+                    Same Tree
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="28">
+                    Subtree of Another Tree
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="29">
+                    LCA of BST
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="30">
+                    BT Level Order Traversal
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="31">
+                    Validate BST
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="32">
+                    Kth Smallest Element In BST
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="33">
+                    BT From Preorder, Inorder
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="34">
+                    BT Max Path Sum
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="35">
+                    Serialize And Deserialize BT
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="36">
+                    Implement Trie Prefix Tree
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="37">
+                    Design Add And Search Words DS
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="38">
+                    Word Search II
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="39">
+                    Find Median From Data Stream
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="40">
+                    Combination Sum
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="41">
+                    Word Search
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="42">
+                    Number of Islands
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="43">
+                    Clone Graph
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="44">
+                    Pacific Atlantic Water Flow
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="45">
+                    Course Schedule
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="46">
+                    No. Connected Components In Undirected Graph
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="47">
+                    Graph Valid Tree
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="48">
+                    Alien Dictionary
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="49">
+                    Climbing Stairs
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="50">
+                    House Robber
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="51">
+                    House Robber II
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="52">
+                    Longest Palindromic Substring
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="53">
+                    Palindromic Substrings
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="54">
+                    Decode Ways
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="55">
+                    Coin Change
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="56">
+                    Maximum Product Subarray
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="57">
+                    Word Break
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="58">
+                    Longest Inc Subsequence
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="59">
+                    Unique Paths
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="60">
+                    Longest Common Subsequence
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="61">
+                    Maximum Subarray
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="62">
+                    Jump Game
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="63">
+                    Insert Interval
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="64">
+                    Merge Intervals
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="65">
+                    Non Overlapping Intervals
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="66">
+                    Meeting Rooms
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="67">
+                    Meeting Rooms II
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="68">
+                    Rotate Image
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="69">
+                    Spiral Matrix
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="70">
+                    Set Matrix Os
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="71">
+                    Number of 1 Bits
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="72">
+                    Counting Bits
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="73">
+                    Reverse Bits
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="74">
+                    Missing Number
+                </button>
+                <button class="score-button" data-user-id="{{ user.id }}" data-button-id="75">
+                    Sum of Two Integers
+                </button>
+            </div>
+            <button class="delete-button" onclick="confirmDelete({{ user.id }})">Delete User</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <form class="add-user-form" method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.name.label }} {{ form.name() }} {{ form.submit() }}</p>
+    </form>
+
+    <script>
+        function confirmDelete(userId) {
+            if (confirm("Are you sure you want to delete this user?")) {
+                window.location.href = `/delete/${userId}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const scoreButtons = document.querySelectorAll('.score-button');
+
+            scoreButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const userId = button.getAttribute('data-user-id');
+                    const buttonId = button.getAttribute('data-button-id');
+
+                    console.log(`User ID: ${userId}, Button ID: ${buttonId}`);
+
+                    button.classList.toggle('green');
+
+                    const scoreElement = document.getElementById(`score_${userId}`);
+                    const currentScore = parseInt(scoreElement.textContent);
+                    const newScore = button.classList.contains('green') ? currentScore + 1 : currentScore - 1;
+                    scoreElement.textContent = newScore;
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
